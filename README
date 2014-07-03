@@ -1,0 +1,11 @@
+uorm is very lightweight "Anti-ORM" style ORM (Object-Relational Mapper)
+for MicroPython (https://github.com/micropython/micropython).
+
+uorm doesn't try to define obscure API to conceal SQL from a programmer,
+it's sole purpose is to provide very thin "model" abstraction just to
+keep code organized, and automate the most repeative, trivial SQL
+queries. More complex queries, you will write in full SQL as usual, so
+you will know what exactly is executed, will be able to easily optimize
+it, etc.
+
+See examples/ directory for usage examples.
