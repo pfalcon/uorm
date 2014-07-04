@@ -42,8 +42,17 @@ class Model:
             print(e)
         c.close()
 
+    @classmethod
+    def execute(cls, sql, args=()):
+        c = cls.__db__.conn.cursor()
+        print(sql, args)
+        c.execute(sql, args)
+        return ResultSet(c)
+
     @staticmethod
     def render_where(where):
+        if where is None:
+            return ("1", ())
         if isinstance(where, int):
             return ("id=%s",  (where,))
         if isinstance(where, dict):
@@ -84,11 +93,16 @@ class Model:
         c.close()
 
     @classmethod
-    def select(cls, sql, args=()):
+    def select(cls, where=None):
+        wh_sql, wh_vals = cls.render_where(where)
+        s = "SELECT * FROM %s WHERE %s" % (
+            cls.__table__,
+            wh_sql
+        )
         c = cls.__db__.conn.cursor()
-        c.execute(sql, args)
+        c.execute(s, wh_vals)
         return ResultSet(c)
 
     @classmethod
     def get_id(cls, id):
-        return cls.select("SELECT * FROM %s WHERE id=%%s" % cls.__table__, (id,))
+        return cls.execute("SELECT * FROM %s WHERE id=%%s" % cls.__table__, (id,))

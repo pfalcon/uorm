@@ -21,10 +21,10 @@ class Note(uorm.Model):
         )
     """
 
-    # Example of query method
+    # Example of custom query method
     @classmethod
     def public(cls):
-        return cls.select("""
+        return cls.execute("""
             SELECT * FROM note
             WHERE archived=0
             ORDER BY timestamp
@@ -37,6 +37,10 @@ if __name__ == "__main__":
     Note.create(content="foo")
     Note.create(timestamp="20140609", content="foo")
     Note.update(where={"timestamp": "20140609"}, content="foo bar")
-    print(list(Note.public()))
-    print(list(Note.get_id(1)))
+    # Get row by id
+    print("get_id", list(Note.get_id(1)))
+    # Get using select method
+    print("select", list(Note.select({"timestamp": "20140609"})))
+    # Get using custom query method
+    print("custom", list(Note.public()))
     db.close()
