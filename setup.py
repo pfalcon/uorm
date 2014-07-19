@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(name='uorm',
-      version='0.2',
+      version='0.2.1',
       description="""Very lightweight, memory-efficient (uses generator
 protocol), dependency-free anti-ORM (Object-Relational Mapper) for
 MicroPython. Using this module, one can simplify typical database access
