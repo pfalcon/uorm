@@ -34,12 +34,15 @@ class ResultSet:
 class Model:
 
     @classmethod
-    def create_table(cls):
+    def create_table(cls, fail_silently=False):
         c = cls.__db__.conn.cursor()
         try:
             c.execute(cls.__schema__)
         except DB.Error as e:
-            print(e)
+            if fail_silently:
+                print(e)
+            else:
+                raise
         c.close()
 
     @classmethod
