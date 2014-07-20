@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(name='uorm',
-      version='0.2.1',
+      version='0.2.2',
       description="""Very lightweight, memory-efficient (uses generator
 protocol), dependency-free anti-ORM (Object-Relational Mapper) for
 MicroPython. Using this module, one can simplify typical database access
@@ -13,4 +13,5 @@ ORM pseudo-language.
       author='Paul Sokolovsky',
       author_email='pfalcon@users.sourceforge.net',
       license='MIT',
-      py_modules=['uorm'])
+      py_modules=['uorm'],
+      install_requires=['micropython-sqlite3'])
