@@ -33,6 +33,8 @@ class ResultSet:
 
 class Model:
 
+    __pkey__ = "id"
+
     @classmethod
     def create_table(cls, fail_silently=False):
         c = cls.__db__.conn.cursor()
@@ -76,7 +78,11 @@ class Model:
         c = cls.__db__.conn.cursor()
         c.execute(s, fields.values())
         c.close()
-        return c.lastrowid
+
+        if cls.__pkey__ == "id":
+            return c.lastrowid
+
+        return list(cls.execute("SELECT %s FROM %s WHERE rowid=%%s" % (cls.__pkey__, cls.__table__), (c.lastrowid,)))[0][0]
 
     @classmethod
     def update(cls, where, **fields):
@@ -108,4 +114,4 @@ class Model:
 
     @classmethod
     def get_id(cls, id):
-        return cls.execute("SELECT * FROM %s WHERE id=%%s" % cls.__table__, (id,))
+        return cls.execute("SELECT * FROM %s WHERE %s=%%s" % (cls.__table__, cls.__pkey__), (id,))
