@@ -1,5 +1,6 @@
 uorm is very lightweight "Anti-ORM" style ORM (Object-Relational Mapper)
-for MicroPython (https://github.com/micropython/micropython).
+for Pycopy (https://github.com/pfalcon/pycopy), a small Python
+implementation.
 
 uorm doesn't try to define obscure API to conceal SQL from a programmer,
 it's sole purpose is to provide very thin "model" abstraction just to
