@@ -64,7 +64,7 @@ class Model:
             keys = []
             vals = []
             for k, v in where.items():
-                keys.append("%s=%%s" % k)
+                keys.append("%s=?" % k)
                 vals.append(v)
             return (" AND ".join(keys), vals)
         return (where, ())
@@ -73,23 +73,23 @@ class Model:
     def create(cls, **fields):
         s = "INSERT INTO %s(%s) VALUES(%s)" % (
             cls.__table__, ", ".join(fields.keys()),
-            ", ".join(["%s"] * len(fields))
+            ", ".join(["?"] * len(fields))
         )
         c = cls.__db__.conn.cursor()
-        c.execute(s, fields.values())
+        c.execute(s, tuple(fields.values()))
         c.close()
 
         if cls.__pkey__ == "id":
             return c.lastrowid
 
-        return list(cls.execute("SELECT %s FROM %s WHERE rowid=%%s" % (cls.__pkey__, cls.__table__), (c.lastrowid,)))[0][0]
+        return list(cls.execute("SELECT %s FROM %s WHERE rowid=?" % (cls.__pkey__, cls.__table__), (c.lastrowid,)))[0][0]
 
     @classmethod
     def update(cls, where, **fields):
         keys = []
         vals = []
         for k, v in fields.items():
-            keys.append("%s=%%s" % k)
+            keys.append("%s=?" % k)
             vals.append(v)
 
         wh_sql, wh_vals = cls.render_where(where)
@@ -114,4 +114,4 @@ class Model:
 
     @classmethod
     def get_id(cls, id):
-        return cls.execute("SELECT * FROM %s WHERE %s=%%s" % (cls.__table__, cls.__pkey__), (id,))
+        return cls.execute("SELECT * FROM %s WHERE %s=?" % (cls.__table__, cls.__pkey__), (id,))
