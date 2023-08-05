@@ -30,6 +30,9 @@ class ResultSet:
             raise StopIteration
         return row
 
+    def close(self):
+        self.c.close()
+
 
 class Model:
 
