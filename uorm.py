@@ -105,6 +105,17 @@ class Model:
         c.close()
 
     @classmethod
+    def delete(cls, where):
+        wh_sql, wh_vals = cls.render_where(where)
+        s = "DELETE FROM %s WHERE %s" % (
+            cls.__table__,
+            wh_sql
+        )
+        c = cls.__db__.conn.cursor()
+        c.execute(s, wh_vals)
+        c.close()
+
+    @classmethod
     def select(cls, where=None):
         wh_sql, wh_vals = cls.render_where(where)
         s = "SELECT * FROM %s WHERE %s" % (
